@@ -1,7 +1,9 @@
+import Home from './pages/Home'
+
 const App = () => {
   return (
-    <div className="App">
-     
+    <div className="wrapper">
+      <Home />
     </div>
   )
 }
