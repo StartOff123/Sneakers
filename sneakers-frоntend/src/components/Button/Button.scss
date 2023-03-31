@@ -1,0 +1,56 @@
+.button {
+    position: relative;
+    border: none;
+    outline: none;
+    width: 100%;
+    background: #9DD558;
+    border-radius: 18px;
+    padding: 18px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    transition: background .2s;
+    cursor: pointer;
+
+    svg {
+        position: absolute;
+        transform: translate(0, -50%);
+        top: 50%;
+        height: 30px;
+        width: 30px;
+        transition: all .2s;
+    }
+
+    &-next {
+        svg {
+            right: 33px;
+        }
+
+        &:hover {
+            svg {
+                right: 27px;
+            }
+        }
+    }
+
+    &-back {
+        svg {
+            left: 33px;
+        }
+
+        &:hover {
+            svg {
+                left: 27px;
+            }
+        }
+    }
+
+    &:hover {
+        background: #8ec051;
+    }
+
+    &:active {
+        background: #84b14c;
+    }
+}

@@ -1,7 +1,23 @@
 .home {
-    background: #fff;
-    max-width: 1080px;
-    margin: 0 auto;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
-    border-radius: 20px;
+    padding: 20px 60px;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        h1 {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 39px;
+        }
+    }
+
+    &__priceList {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        column-gap: 25px;
+        row-gap: 20px;
+    }
 }
