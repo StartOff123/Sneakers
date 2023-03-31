@@ -1,6 +1,6 @@
 import React from 'react'
 import { Cart3, Heart, PersonCircle } from 'react-bootstrap-icons'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { setIsVisib } from '../../redux/slices/visibCart'
@@ -8,6 +8,8 @@ import logo from '../../assets/img/logo.png'
 import './Header.scss'
 
 const Header = () => {
+    const { isAuth } = useSelector(state => state.auth)
+
     const dispatch = useDispatch()
     const onVisibCart = () => dispatch(setIsVisib(true))
 
@@ -20,19 +22,27 @@ const Header = () => {
                     <b>Магазин лучших кросовок</b>
                 </div>
             </Link>
-            <div className="header__profile">
-                <div onClick={onVisibCart} className="header__profile--cart">
-                    <Cart3 />
-                    <span>1200 ₽</span>
-                </div>
-                <div className="header__profile--btn">
-                    <Link to='/bookmarks'>
-                        <Heart />
-                    </Link>
-                    <Link to='/profile'>
-                        <PersonCircle />
-                    </Link>
-                </div>
+            <div className="header__profile" style={!isAuth ? {border: 'none', borderRadius: 0} : {}}>
+                {isAuth ?
+                    <>
+                        <div onClick={onVisibCart} className="header__profile--cart">
+                            <Cart3 />
+                            <span>1200 ₽</span>
+                        </div>
+                        <div className="header__profile--btn">
+                            <Link to='/bookmarks'>
+                                <Heart />
+                            </Link>
+                            <Link to='/profile'>
+                                <PersonCircle />
+                            </Link>
+                        </div>
+                    </> : 
+                        <div className="header__profile--authBtn">
+                            <Link to='/auth/login'>Войти</Link>
+                            <Link to='/auth/register'>Зарегестрироваться</Link>
+                        </div>
+                    }
             </div>
         </div>
     )

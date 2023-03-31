@@ -87,5 +87,49 @@
                 }
             }
         }
+
+        &--authBtn {
+            display: flex;
+
+            a {
+                display: block;
+                text-decoration: none;
+                padding: 10px 15px;
+                margin-left: 10px;
+                border-radius: 5px;
+                font-size: 14px;
+                transition: all .2s;
+                cursor: pointer;
+
+                &:first-child {
+                    background: #9DD558;
+                    color: #fff;
+
+                    &:hover {
+                        background: #8ec051;
+                    }
+                
+                    &:active {
+                        background: #84b14c;
+                    }
+                }
+
+                &:last-child {
+                    border: 1px solid #c2c2c2;
+                    color: #c2c2c2;
+                    background: transparent;
+                    
+                    &:hover {
+                        border-color: #84b14c;
+                        color: #84b14c;
+                    }
+                
+                    &:active {
+                        border-color: #84b14c;
+                        color: #84b14c;
+                    }
+                }
+            }
+        }
     }
 }
