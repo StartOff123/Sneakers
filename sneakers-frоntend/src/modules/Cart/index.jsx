@@ -1,15 +1,15 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 
-import emptyCart from '../../assets/img/box.png'
-import Card from '../../components/Card'
-import { setIsVisib } from '../../redux/slices/visibCart'
-import Button from '../../components/Button'
+import { Box } from '../../assets'
+import { Card } from '../../components'
+import { setIsVisibCard } from '../../redux/slices/visib'
+import { Button } from '../../components'
 import './Cart.scss'
 
 const Cart = () => {
   const dispatch = useDispatch()
-  const onCloseCart = () => dispatch(setIsVisib(false))
+  const onCloseCart = () => dispatch(setIsVisibCard(false))
 
   const items = [
     {
@@ -43,10 +43,10 @@ const Cart = () => {
             </div> :
             <div className="cart__block--top--empty">
               <div className="cart__block--top--empty-block">
-                <img src={emptyCart} alt="Box" />
+                <img src={Box} alt="Box" />
                 <h1>Корзина пустая</h1>
                 <p>Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ.</p>
-                <Button type='back' content='Вернуться назад' action={onCloseCart}/>
+                <Button type='back' content='Вернуться назад' action={onCloseCart} />
               </div>
             </div>
           }

@@ -2,9 +2,8 @@ import React from 'react'
 import { CaretLeft } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
 
-import Button from '../../components/Button'
-import notBookmarks from '../../assets/img/notBookmarks.png'
-import Card from '../../components/Card'
+import { Button, Card } from '../../components'
+import { NotBookmarks } from '../../assets'
 import './Bookmarks.scss'
 
 const Bookmarks = () => {
@@ -19,7 +18,6 @@ const Bookmarks = () => {
     const items = null
 
     return (
-
         <div className='bookmarks'>
             {items ?
                 <>
@@ -36,7 +34,7 @@ const Bookmarks = () => {
                     </div>
                 </> :
                 <div className="bookmarks__notBookmarks">
-                    <img src={notBookmarks} alt="notBookmarks" />
+                    <img src={NotBookmarks} alt="notBookmarks" />
                     <h1>Закладок нет :(</h1>
                     <p>Вы ничего не добавляли в закладки</p>
                     <Link to='/'>

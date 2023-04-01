@@ -2,10 +2,9 @@ import React from 'react'
 import { CaretLeft } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
 
-import notPurchase from '../../assets/img/notPurchase.png'
-import Card from '../../components/Card'
+import { NotPurchase } from '../../assets'
+import { Button, Card } from '../../components'
 import './Profile.scss'
-import Button from '../../components/Button'
 
 const Profile = () => {
     // const items = [
@@ -34,7 +33,7 @@ const Profile = () => {
                     </div>
                 </> :
                 <div className="profile__notPurchase">
-                    <img src={notPurchase} alt="notPurchase" />
+                    <img src={NotPurchase} alt="notPurchase" />
                     <h1>У вас нет заказов</h1>
                     <p>Вы нищеброд? <br /> Оформите хотя бы один заказ.</p>
                     <Link to='/'>

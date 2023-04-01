@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import cartVisib from './slices/visibCart'
+import visib from './slices/visib'
 import auth from './slices/Auth'
 
 const store = configureStore({
-    reducer: { cartVisib, auth }
+    reducer: { visib, auth }
 })
 
 export default store

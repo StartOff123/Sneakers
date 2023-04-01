@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { Form, Input } from 'antd'
 
-import Button from '../../components/Button'
+import { Button } from '../../components'
 import './Login.scss'
 
 const Login = () => {
@@ -18,13 +18,13 @@ const Login = () => {
             >
                 <Form.Item
                     name="username"
-                    rules={[{ required: true, message: 'Пожалуйста заполните это поле!' }]}
+                    rules={[{ required: true, message: 'Пожалуйста заполните это поле' }]}
                 >
                     <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Логин" />
                 </Form.Item>
                 <Form.Item
                     name="password"
-                    rules={[{ required: true, message: 'Пожалуйста заполните это поле!' }]}
+                    rules={[{ required: true, message: 'Пожалуйста заполните это поле' }]}
                 >
                     <Input.Password
                         prefix={<LockOutlined className="site-form-item-icon" />}
