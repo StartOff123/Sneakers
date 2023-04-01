@@ -16,26 +16,24 @@ const Register = () => {
                 initialValues={{ remember: true }}
             // onFinish={onFinish}
             >
-                <Form.Item layout="inline" name="horizontal_login">
+                <Form name="horizontal_login" layout="inline" style={{ justifyContent: 'space-between', marginBottom: 20 }}>
                     <Form.Item
-                        name="username"
-                        rules={[{ required: true, message: 'Please input your username!' }]}
+                        style={{ width: '48%', margin: 0}}
+                        name="name"
+                        rules={[{ required: true, message: '' }]}
                     >
-                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Имя" />
                     </Form.Item>
                     <Form.Item
-                        name="password"
-                        rules={[{ required: true, message: 'Please input your password!' }]}
+                        style={{ width: '48%', margin: 0}}
+                        name="surname"
+                        rules={[{ required: true, message: '' }]}
                     >
-                        <Input
-                            prefix={<LockOutlined className="site-form-item-icon" />}
-                            type="password"
-                            placeholder="Password"
-                        />
+                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Фамилия" />
                     </Form.Item>
-                </Form.Item>
+                </Form>
                 <Form.Item
-                    name="username"
+                    name="login"
                     rules={[{ required: true, message: 'Пожалуйста заполните это поле!' }]}
                 >
                     <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Придумайте логин" />
@@ -51,7 +49,7 @@ const Register = () => {
                     />
                 </Form.Item>
                 <Form.Item
-                    name="password"
+                    name="confpassword"
                     rules={[{ required: true, message: 'Пожалуйста заполните это поле!' }]}
                 >
                     <Input.Password

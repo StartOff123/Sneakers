@@ -21,7 +21,7 @@ const Home = () => {
       title: 'Кроссовки Nike Air Force 1 Low SP x Undefeated',
       imgUrl: 'https://with.com.ru/wp-content/uploads/2022/03/%D0%9A%D1%80%D0%BE%D1%81%D1%81%D0%BE%D0%B2%D0%BA%D0%B8-Nike-Air-Force-1-Low-Undefeated-%D0%BA%D1%83%D0%BF%D0%B8%D1%82%D1%8C-%D0%BE%D1%80%D0%B8%D0%B3%D0%B8%D0%BD%D0%B0%D0%BB11-e1647167157100.jpg',
       price: 22990
-    }
+    },
   ]
 
   return (
