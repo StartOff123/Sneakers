@@ -32,11 +32,6 @@ export const register = async (req, res) => {
         })
         console.log(`${chalk.green('POST')} ${chalk.underline.italic.gray('/auth/register')} success: ${chalk.green('true')}`)
     } catch (error) {
-        error.code && error.code === 11000 && (
-            res.status(403).json({
-                message: 'Логин занят'
-            })
-        )
         res.status(403).json({
             message: 'Не удалось зарегестрироваться'
         })
@@ -76,26 +71,22 @@ export const login = async (req, res) => {
     } catch (error) {
         res.status(403).json({
             message: 'Не удалось авторизоваться'
-        }) 
+        })
         console.log(`${chalk.green('POST')} ${chalk.underline.italic.gray('/auth/login')} success: ${chalk.red('false')}`)
     }
 }
 
 export const getMe = async (req, res) => {
-    try {
-        const user = await UserModel.findById(req.userId)
-        if (!user) {
-            return res.status(404).json({
-                message: 'Пользователь не найден'
-            })
-        }
-
-        const { passwordHash, ...userData } = user._doc
-        res.json({
-            ...userData
+    const user = await UserModel.findById(req.userId)
+    if (!user) {
+        return res.status(404).json({
+            message: 'Пользователь не найден'
         })
-        console.log(`${chalk.magenta('GET')} ${chalk.underline.italic.gray('/auth/me')} success: ${chalk.green('true')}`)
-    } catch (error) {
-        
     }
+
+    const { passwordHash, ...userData } = user._doc
+    res.json({
+        ...userData
+    })
+    console.log(`${chalk.magenta('GET')} ${chalk.underline.italic.gray('/auth/me')} success: ${chalk.green('true')}`)
 }

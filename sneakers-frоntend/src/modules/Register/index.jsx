@@ -1,22 +1,46 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Form, Input } from 'antd'
-import { withFormik } from 'formik'
+import { useSelector, useDispatch } from 'react-redux'
+import { Form, Input, message } from 'antd'
+import { useFormik } from 'formik'
 import { validateForm } from '../../utils'
 
+import { fetchRegister } from '../../redux/slices/Auth'
 import { Button } from '../../components'
 import './Register.scss'
 
-const Register = props => {
-    const {
-        values,
-        touched,
-        errors,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-    } = props
+const Register = () => {
+    const dispath = useDispatch()
+    const { registerError } = useSelector(state => state.auth)
+    console.log(registerError)
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            surname: '',
+            login: '',
+            password: '',
+            confirmation: '',
+        },
+        validate: values => {
+            let errors = {}
+            validateForm({ values, errors })
+
+            return errors
+        },
+        onSubmit: async (values) => {
+            const { confirmation, ...data } = values
+            await dispath(fetchRegister(data))
+
+            if (registerError) {
+                message.error(registerError.error.message)
+            } else {
+                message.success('Регистрация прошла успешно!')
+                return <Navigate to='/auth/login' />
+            }
+        }
+    })
 
     return (
         <div className='register'>
@@ -25,26 +49,27 @@ const Register = props => {
                 name="normal_login"
                 className="login-form"
                 initialValues={{ remember: true }}
+                onFinish={formik.handleSubmit}
             >
                 <Form name="horizontal_login" layout="inline" style={{ justifyContent: 'space-between', marginBottom: 20 }}>
                     <Form.Item
                         style={{ width: '48%', margin: 0 }}
                         name="Name"
-                        validateStatus={!touched.name ? '' : errors.name ? 'error' : 'success'}
+                        validateStatus={!formik.touched.name ? '' : formik.errors.name ? 'error' : 'success'}
                         rules={[{ required: true }]}
                     >
                         <Input
                             id='name'
                             prefix={<UserOutlined className="site-form-item-icon" />}
                             placeholder="Имя"
-                            value={values.firstname}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
+                            value={formik.values.name}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
                         />
                     </Form.Item>
                     <Form.Item
                         style={{ width: '48%', margin: 0 }}
-                        validateStatus={!touched.surname ? '' : errors.surname ? 'error' : 'success'}
+                        validateStatus={!formik.touched.surname ? '' : formik.errors.surname ? 'error' : 'success'}
                         name="Surname"
                         rules={[{ required: true }]}
                     >
@@ -52,31 +77,31 @@ const Register = props => {
                             id='surname'
                             prefix={<UserOutlined className="site-form-item-icon" />}
                             placeholder="Фамилия"
-                            value={values.suranem}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
+                            value={formik.values.suranem}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
                         />
                     </Form.Item>
                 </Form>
                 <Form.Item
                     name="Login"
-                    help={touched.login && errors.login && errors.login}
-                    validateStatus={!touched.login ? '' : errors.login ? 'error' : 'success'}
+                    help={formik.touched.login && formik.errors.login && formik.errors.login}
+                    validateStatus={!formik.touched.login ? '' : formik.errors.login ? 'error' : 'success'}
                     rules={[{ required: true }]}
                 >
                     <Input
                         id='login'
                         prefix={<UserOutlined className="site-form-item-icon" />}
                         placeholder="Придумайте логин"
-                        value={values.login}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
+                        value={formik.values.login}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
                 </Form.Item>
                 <Form.Item
                     name="Password"
-                    help={touched.password && errors.password && errors.password}
-                    validateStatus={!touched.password ? '' : errors.password ? 'error' : 'success'}
+                    help={formik.touched.password && formik.errors.password && formik.errors.password}
+                    validateStatus={!formik.touched.password ? '' : formik.errors.password ? 'error' : 'success'}
                     rules={[{ required: true }]}
                 >
                     <Input.Password
@@ -84,28 +109,28 @@ const Register = props => {
                         prefix={<LockOutlined className="site-form-item-icon" />}
                         type="password"
                         placeholder="Пароль"
-                        value={values.password}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
                 </Form.Item>
                 <Form.Item
                     name="Confirmation"
-                    help={touched.confirmation && errors.confirmation && errors.confirmation}
-                    validateStatus={!touched.confirmation ? '' : errors.confirmation ? 'error' : 'success'}
+                    help={formik.touched.confirmation && formik.errors.confirmation && formik.errors.confirmation}
+                    validateStatus={!formik.touched.confirmation ? '' : formik.errors.confirmation ? 'error' : 'success'}
                     rules={[{ required: true }]}
                 >
                     <Input.Password
                         id='confirmation'
                         prefix={<LockOutlined className="site-form-item-icon" />}
                         placeholder="Поддтвердите пароль"
-                        value={values.confirmation}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
+                        value={formik.values.confirmation}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
                 </Form.Item>
                 <Form.Item>
-                    <Button action={handleSubmit} content='Зарегестрироваться' padding={10} borderRadius={10} />
+                    <Button content='Зарегестрироваться' padding={10} borderRadius={10} />
                 </Form.Item>
             </Form>
             <Link to='/auth/login'>Авторизоваться</Link>
@@ -113,25 +138,4 @@ const Register = props => {
     )
 }
 
-export default withFormik({
-    mapPropsToValues: () => ({
-        name: '',
-        surname: '',
-        login: '',
-        password: '',
-        confirmation: '',
-    }),
-    validate: values => {
-        let errors = {}
-        validateForm({ values, errors })
-
-        return errors
-    },
-    handleSubmit: (values, { setSubmitting }) => {
-        setTimeout(() => {
-            alert(JSON.stringify(values, null, 2))
-            setSubmitting(false)
-        }, 1000)
-    },
-    displayName: "RegisterForm"
-})(Register)
+export default Register

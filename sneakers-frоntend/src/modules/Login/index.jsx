@@ -1,29 +1,32 @@
 import React from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Form, Input } from 'antd'
+import { Form, Input, message } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchAuth, selectIsAuth } from '../../redux/slices/Auth'
+import { fetchLogin } from '../../redux/slices/Auth'
 import { Button } from '../../components'
 import './Login.scss'
 
 const Login = () => {
     const dispatch = useDispatch()
-    const isAuth = useSelector(selectIsAuth)
+    const { status, error } = useSelector(state => state.auth)
 
-    if (isAuth) {
-        return <Navigate to='/' />
-    }
 
     const onSubmit = async (values) => {
-        const data = await dispatch(fetchAuth(values))
+        const data = await dispatch(fetchLogin(values))
+        if (status === 'error') {
+            return message.error(error.message, 1.5)
+        } else {
+            message.success('Вы успешно авторизовались!')
+        }
+        
         if ('token' in data.payload) {
             localStorage.setItem('token', data.payload.token)
-
         } else {
-            alert('Не удалось авторизоваться')
+            message.error('Не удалось авторизоваться', 1.5)
         }
+        return <Navigate to='/' />
     }
 
     return (

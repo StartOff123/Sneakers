@@ -1,11 +1,19 @@
 import React from 'react'
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link, Navigate } from 'react-router-dom'
 import { CaretLeft } from 'react-bootstrap-icons'
+import { useSelector } from 'react-redux'
 
+import { selectIsAuth } from '../../redux/slices/Auth'
 import { Logo } from '../../assets'
 import './Auth.scss'
 
 const Auth = () => {
+    const isAuth = useSelector(selectIsAuth)
+
+    if (isAuth) {
+        return <Navigate to='/' />
+    }
+
     return (
         <div className='auth'>
             <div className="auth__header">

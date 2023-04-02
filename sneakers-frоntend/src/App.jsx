@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route, Outlet } from 'react-router-dom'
 
 import { Header } from './components'
-import { fetchAuthMe } from './redux/slices/Auth'
+import { fetchGetMe } from './redux/slices/Auth'
 import { Bookmarks, Home, Auth, Profile, FullCard } from './pages'
 import { Cart, Login, Register} from './modules'
 
@@ -13,7 +13,7 @@ const App = () => {
 
   React.useEffect(() => {
     if (window.localStorage.getItem('token')) {
-      dispatch(fetchAuthMe())
+      dispatch(fetchGetMe())
       return
     }
   }, [])
