@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { setIsVisibCard } from '../../redux/slices/visib'
+import { selectIsAuth } from '../../redux/slices/Auth'
 import { Logo } from '../../assets'
 import './Header.scss'
 
 const Header = () => {
-    const { isAuth } = useSelector(state => state.auth)
+    const isAuth = useSelector(selectIsAuth)
 
     const dispatch = useDispatch()
     const onVisibCart = () => dispatch(setIsVisibCard(true))
