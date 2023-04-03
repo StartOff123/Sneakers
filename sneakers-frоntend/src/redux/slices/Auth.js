@@ -73,7 +73,7 @@ const authSlice = createSlice({
                 state.registerError = null
             })
             .addCase(fetchRegister.rejected, (state, action) => {
-                state.registerError = action
+                state.registerError = action.error
             })
     }
 })

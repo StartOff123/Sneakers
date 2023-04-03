@@ -68,8 +68,19 @@
         &--btn {
             display: flex;
 
+            &:first-child {
+                a {
+                    svg {
+                        margin-left: 5px;
+                    }
+                }
+            }
+
             a {
                 cursor: pointer;
+                color: #9B9B9B;
+                text-decoration: none;
+                font-size: 14px;
                 transition: background .2s;
                 display: flex;
                 align-items: center;

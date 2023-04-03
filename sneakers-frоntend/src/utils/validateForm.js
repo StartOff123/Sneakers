@@ -35,4 +35,6 @@ export default ({ values, errors }) => {
     Object.keys(values).forEach(
         key => rules[key] && rules[key](errors, values)
     )
+
+    return errors
 }

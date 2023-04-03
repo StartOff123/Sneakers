@@ -4,7 +4,7 @@ import { Routes, Route, Outlet } from 'react-router-dom'
 
 import { Header } from './components'
 import { fetchGetMe } from './redux/slices/Auth'
-import { Bookmarks, Home, Auth, Profile, FullCard } from './pages'
+import { Bookmarks, Home, Auth, Profile, FullCard, AddSneakers } from './pages'
 import { Cart, Login, Register} from './modules'
 
 const App = () => {
@@ -35,6 +35,7 @@ const App = () => {
           <Route path='' element={<Home />} />
           <Route path='bookmarks' element={<Bookmarks />} />
           <Route path='profile' element={<Profile />} />
+          <Route path='addsneakers' element={<AddSneakers />} />
           <Route path=':_id' element={<FullCard />} />
         </Route>
       </Routes>

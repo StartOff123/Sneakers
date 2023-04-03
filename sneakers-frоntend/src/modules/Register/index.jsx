@@ -1,19 +1,18 @@
 import React from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { useSelector, useDispatch } from 'react-redux'
 import { Form, Input, message } from 'antd'
+import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
-import { validateForm } from '../../utils'
 
+import { validateForm } from '../../utils'
 import { fetchRegister } from '../../redux/slices/Auth'
 import { Button } from '../../components'
 import './Register.scss'
 
 const Register = () => {
+    const [status, setStatus] = React.useState(false)
     const dispath = useDispatch()
-    const { registerError } = useSelector(state => state.auth)
-    console.log(registerError)
 
     const formik = useFormik({
         initialValues: {
@@ -29,34 +28,32 @@ const Register = () => {
 
             return errors
         },
-        onSubmit: async (values) => {
+        onSubmit: async values => {
             const { confirmation, ...data } = values
-            await dispath(fetchRegister(data))
-
-            if (registerError) {
-                message.error(registerError.error.message)
-            } else {
-                message.success('Регистрация прошла успешно!')
-                return <Navigate to='/auth/login' />
-            }
+            await (dispath(fetchRegister(data)).unwrap().then(() => {
+                message.success('Регистрация прошла успешно!', 1.3)
+                setStatus(true)
+            }).catch(error => {
+                message.error(error.message, 1.3)
+            }))
         }
     })
 
     return (
         <div className='register'>
+            {status && <Navigate to='/auth/login' />}
             <h1>Регистрация</h1>
             <Form
                 name="normal_login"
                 className="login-form"
                 initialValues={{ remember: true }}
-                onFinish={formik.handleSubmit}
             >
                 <Form name="horizontal_login" layout="inline" style={{ justifyContent: 'space-between', marginBottom: 20 }}>
                     <Form.Item
                         style={{ width: '48%', margin: 0 }}
                         name="Name"
                         validateStatus={!formik.touched.name ? '' : formik.errors.name ? 'error' : 'success'}
-                        rules={[{ required: true }]}
+                        rules={[{ required: true, message: '' }]}
                     >
                         <Input
                             id='name'
@@ -71,7 +68,7 @@ const Register = () => {
                         style={{ width: '48%', margin: 0 }}
                         validateStatus={!formik.touched.surname ? '' : formik.errors.surname ? 'error' : 'success'}
                         name="Surname"
-                        rules={[{ required: true }]}
+                        rules={[{ required: true, message: '' }]}
                     >
                         <Input
                             id='surname'
@@ -130,7 +127,7 @@ const Register = () => {
                     />
                 </Form.Item>
                 <Form.Item>
-                    <Button content='Зарегестрироваться' padding={10} borderRadius={10} />
+                    <Button action={formik.handleSubmit} isSubmitting={formik.isSubmitting} content='Зарегестрироваться' padding={10} borderRadius={10} />
                 </Form.Item>
             </Form>
             <Link to='/auth/login'>Авторизоваться</Link>

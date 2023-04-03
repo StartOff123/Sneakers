@@ -1,5 +1,5 @@
 import React from 'react'
-import { Cart3, Heart, PersonCircle } from 'react-bootstrap-icons'
+import { Cart3, Heart, PersonCircle, PlusLg } from 'react-bootstrap-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -26,6 +26,9 @@ const Header = () => {
             <div className="header__profile" style={!isAuth ? { border: 'none', borderRadius: 0 } : {}}>
                 {isAuth ?
                     <>
+                        <div className="header__profile--btn">
+                            <Link to='/addsneakers'>Добавить товар <PlusLg /></Link>
+                        </div>
                         <div onClick={onVisibCart} className="header__profile--cart">
                             <Cart3 />
                             <span>1200 ₽</span>

@@ -13,6 +13,43 @@
     transition: background .2s;
     cursor: pointer;
 
+    &:disabled {
+        background: #c0ee87;
+        cursor: default;
+
+        &:hover {
+            background: #c0ee87;
+        }
+    }
+
+    &-typing {
+        span {
+            height: 8px;
+            width: 8px;
+            margin: 0px 4px;
+            background-color: #fff;
+            display: inline-block;
+            border-radius: 50%;
+            opacity: 0.4;
+
+            @for $i from 1 through 3 {
+                &:nth-of-type(#{$i}) {
+                    animation: 1s blink infinite ($i * .3333s);
+                }
+            }
+        }
+
+        @keyframes blink {
+            20% {
+                transform: scale(.4);
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+    }
+
     svg {
         position: absolute;
         transform: translate(0, -50%);

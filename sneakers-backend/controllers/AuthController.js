@@ -32,11 +32,16 @@ export const register = async (req, res) => {
         })
         console.log(`${chalk.green('POST')} ${chalk.underline.italic.gray('/auth/register')} success: ${chalk.green('true')}`)
     } catch (error) {
-        res.status(403).json({
-            message: 'Не удалось зарегестрироваться'
-        })
+        error.code ? error.code === 11000 && (
+            res.status(403).json({
+                message: 'Логин занят'
+            })
+        ) : (
+            res.status(403).json({
+                message: 'Не удалось зарегестрироваться'
+            })
+        )
         console.log(`${chalk.green('POST')} ${chalk.underline.italic.gray('/auth/register')} success: ${chalk.red('false')}`)
-        console.log(error)
     }
 }
 
