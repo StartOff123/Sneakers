@@ -6,6 +6,9 @@
     transition: all .2s;
 
     &-list {
+        display: flex;
+        flex-direction: column;
+
         &:hover {
             box-shadow: 0px 14px 30px rgba(0, 0, 0, 0.1);
         }
@@ -65,6 +68,7 @@
         }
 
         #{$self}__title {
+            flex: 1;
             a {
                 color: #000;
                 text-decoration: none;
@@ -153,12 +157,19 @@
             font-size: 14px;
             line-height: 17px;
 
-            p {
+            a {
+                color: #000;
+                text-decoration: none;
                 margin-bottom: 8px;
                 display: -webkit-box;
                 overflow: hidden;
                 -webkit-box-orient: vertical;
                 -webkit-line-clamp: 2;
+                cursor: pointer;
+    
+                &:hover {
+                    text-decoration: underline;
+                }
             }
         }
 

@@ -19,7 +19,7 @@ export const fetchRegister = createAsyncThunk('auth/register', async (params) =>
     try {
         await axios.post('/auth/register', params)
     } catch (error) {
-        throw 'Логин занят'
+        throw error.response.data
     }
 })
 

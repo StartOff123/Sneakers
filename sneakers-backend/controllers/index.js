@@ -1,2 +1,3 @@
 export * as AuthController from './AuthController.js'
-export * as AddedSneakersController from './AddedSneakersController.js'
+export * as CardController from './CardController.js'
+export * as ActionsOnCardContoller from './ActionsOnCardContoller.js'

@@ -4,11 +4,21 @@ import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
 
+import axios from '../../axios'
 import './Card.scss'
 
 const Card = ({ _id, title, imgUrl, price, type, isLiked }) => {
     const [liked, setLiked] = React.useState(false)
     const [added, setAdded] = React.useState(false)
+
+    const onAdded = async id => {
+        setAdded(!added)
+        await axios.post('/user/addCard', { cardId: id })
+    }
+
+    const onRemove = async id => {
+        await axios.post('/user/removeCard', { cardId: id })
+    }
 
     return (
         <div
@@ -18,10 +28,10 @@ const Card = ({ _id, title, imgUrl, price, type, isLiked }) => {
                 borderRadius: 40
             } : {
                 width: '100%',
-                padding: 20,
+                padding: '10px 20px',
                 borderRadius: 20,
                 marginBottom: 20
-            }} 
+            }}
             className={classnames('card', {
                 'card-list': type === 'list',
                 'card-cart': type === 'cart'
@@ -35,7 +45,7 @@ const Card = ({ _id, title, imgUrl, price, type, isLiked }) => {
                         {(liked || isLiked) ? <HeartFill color='#FF8585' /> : <Heart />}
                     </div>
                 }
-                <img src={imgUrl} alt="Sneakers" />
+                <img src={'http://localhost:5555' + imgUrl} alt="Sneakers" />
             </div>
             <div className="card__title">
                 <Link to={"/" + _id}>{title}</Link>
@@ -47,13 +57,13 @@ const Card = ({ _id, title, imgUrl, price, type, isLiked }) => {
                         <b>Цена:</b>
                         <p>{price} ₽</p>
                     </div>
-                    <div onClick={() => setAdded(!added)} className={classnames('card__bottom--addBtn', {
+                    <div onClick={() => onAdded(_id)} className={classnames('card__bottom--addBtn', {
                         'card__bottom--addBtn-added': added
                     })}>
                         {added ? <Check color='#fff' /> : <Plus />}
                     </div>
                 </div> :
-                <div onClick={() => setAdded(!added)} className='card__bottom--remove'>
+                <div onClick={() => onRemove(_id)} className='card__bottom--remove'>
                     <X />
                 </div>
             }

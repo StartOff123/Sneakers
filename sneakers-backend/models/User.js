@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-// import beautifyUnique from 'mo'
 
 const userShema = new mongoose.Schema({
     name: { type: String, require: true },
@@ -11,5 +10,4 @@ const userShema = new mongoose.Schema({
     purchases: { type: Array, default: [] },
 })
 
-// userShema.plugin(beautifyUnique)
 export default mongoose.model('User', userShema)

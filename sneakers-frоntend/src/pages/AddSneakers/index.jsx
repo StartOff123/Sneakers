@@ -1,34 +1,42 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { CaretLeft } from 'react-bootstrap-icons'
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons'
-import { Form, Upload, Input, message, Col, Row, InputNumber } from 'antd'
+import { useDispatch } from 'react-redux'
+import { Form, Upload, Input, message, Col, Row } from 'antd'
 import { useFormik } from 'formik'
 
 import { Button } from '../../components'
+import { fetchAddCard } from '../../redux/slices/Card'
 import './AddSneakers.scss'
 
 const getBase64 = (img, callback) => {
-    const reader = new FileReader();
+    const reader = new FileReader()
     reader.addEventListener('load', () => callback(reader.result))
     reader.readAsDataURL(img)
 }
 
-const beforeUpload = (file) => {
+const dummyRequest = ({ onSuccess }) => onSuccess("ok")
+
+const beforeUpload = file => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
     if (!isJpgOrPng) {
-        message.error('You can only upload JPG/PNG file!')
+        message.error('Можно загружать только JPG/PNG файлы!')
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-        message.error('Image must smaller than 2MB!')
+        message.error('Максильный размер изображения 2MB!')
     }
     return isJpgOrPng && isLt2M
 }
 
 const AddSneakers = () => {
+    const dispatch = useDispatch()
+
+    const [status, setStatus] = React.useState(false)
     const [loading, setLoading] = React.useState(false)
-    const [imageUrl, setImageUrl] = React.useState('')
+    const [imageUrl, setImageUrl] = React.useState()
+    const [image, setImage] = React.useState()
 
     const handleChange = (info) => {
         if (info.file.status === 'uploading') {
@@ -39,13 +47,13 @@ const AddSneakers = () => {
             getBase64(info.file.originFileObj, (url) => {
                 setLoading(false)
                 setImageUrl(url)
+                setImage(info.file.originFileObj)
             })
         }
     }
 
     const formik = useFormik({
         initialValues: {
-            imageUrl,
             title: '',
             description: '',
             price: '',
@@ -53,6 +61,9 @@ const AddSneakers = () => {
         validate: values => {
             let errors = {}
 
+            if (values.title === '') {
+                errors.title = 'Пожалуйста заполните это поле'
+            }
             if (values.description === '') {
                 errors.description = 'Пожалуйста заполните это поле'
             }
@@ -66,7 +77,23 @@ const AddSneakers = () => {
             return errors
         },
         onSubmit: async values => {
-            console.log(imageUrl, values)
+            const formData = new FormData()
+            const { price, ...otherValues } = values
+            const imageName = image.name
+            formData.append('image', image)
+
+            const data = {
+                formData,
+                imageName,
+                price: Number(price),
+                ...otherValues
+            }
+            await dispatch(fetchAddCard(data)).unwrap().then(() => {
+                message.success('Товар успешно добавлен!', 1.3)
+                setStatus(true)
+            }).catch(error => {
+                message.error(error.message, 1.3)
+            })
         }
     })
 
@@ -85,6 +112,7 @@ const AddSneakers = () => {
 
     return (
         <div className='addsneakers'>
+            {status && <Navigate to='/' />}
             <div className="addsneakers__header">
                 <Link to='/' className='addsneakers__header--back'>
                     <CaretLeft />
@@ -105,7 +133,7 @@ const AddSneakers = () => {
                                 listType="picture-card"
                                 className="addsneakers__form-uploader"
                                 showUploadList={false}
-                                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                customRequest={dummyRequest}
                                 beforeUpload={beforeUpload}
                                 onChange={handleChange}
                             >

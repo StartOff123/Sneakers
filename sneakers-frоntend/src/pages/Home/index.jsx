@@ -1,31 +1,19 @@
 import React from 'react'
 import { Input } from 'antd'
 import { Search } from 'react-bootstrap-icons'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { Card } from '../../components'
 import './Home.scss'
+import { fetchAllCard } from '../../redux/slices/Card'
 
 const Home = () => {
-  const items = [
-    {
-      _id: 1,
-      title: 'ADIDAS DEERUPT RUNNER БЕЛО-ЧЕРНЫЕ МУЖСКИЕ-ЖЕНСКИЕ (35-44)',
-      imgUrl: 'https://streetfoot.ru/wp-content/uploads/2020/07/adidas-deerupt-runner-belo-chernye-40-44.jpg',
-      price: 5090
-    },
-    {
-      _id: 2,
-      title: 'Adidas BB1826 легко Boost Yeezy Boost 350 V2 белуга низким вырезом кроссовки',
-      imgUrl: 'https://i.ebayimg.com/images/g/9BkAAOSwcLhhWoLX/s-l500.jpg',
-      price: 71097
-    },
-    {
-      _id: 3,
-      title: 'Кроссовки Nike Air Force 1 Low SP x Undefeated',
-      imgUrl: 'https://with.com.ru/wp-content/uploads/2022/03/%D0%9A%D1%80%D0%BE%D1%81%D1%81%D0%BE%D0%B2%D0%BA%D0%B8-Nike-Air-Force-1-Low-Undefeated-%D0%BA%D1%83%D0%BF%D0%B8%D1%82%D1%8C-%D0%BE%D1%80%D0%B8%D0%B3%D0%B8%D0%BD%D0%B0%D0%BB11-e1647167157100.jpg',
-      price: 22990
-    },
-  ]
+  const dispatch = useDispatch()
+  const { cardData } = useSelector(state => state.card)
+
+  React.useEffect(() => {
+    dispatch(fetchAllCard())
+  }, [])
 
   return (
     <div className='home'>
@@ -39,7 +27,7 @@ const Home = () => {
         />
       </div>
       <div className="home__priceList">
-        {items.map(item =>
+        {cardData && cardData.map(item =>
           <Card key={item._id} {...item} type='list' />
         )}
       </div>

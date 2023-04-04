@@ -5,7 +5,7 @@ const initialState = {
 }
 
 const visibSlice = createSlice({
-    name: 'cart',
+    name: 'Visib',
     initialState,
     reducers: {
         setIsVisibCard: (state, action) => { 
