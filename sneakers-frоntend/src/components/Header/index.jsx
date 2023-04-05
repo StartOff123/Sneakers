@@ -3,6 +3,7 @@ import { Cart3, Heart, PersonCircle, PlusLg } from 'react-bootstrap-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import { calcTotalPrice } from '../../utils'
 import { fetchAllCart } from '../../redux/slices/Cart'
 import { setIsVisibCard } from '../../redux/slices/Visib'
 import { selectIsAuth } from '../../redux/slices/Auth'
@@ -12,18 +13,17 @@ import './Header.scss'
 const Header = () => {
     const dispatch = useDispatch()
     const isAuth = useSelector(selectIsAuth)
-    const { cartItems } = useSelector(state => state.cart)
-    const [totalPrice, setTotalPrice] = React.useState(0)
+    const { totalPrice, cartItems } = useSelector(state => state.cart)
 
     const onVisibCart = () => dispatch(setIsVisibCard(true))
 
     React.useEffect(() => {
-        cartItems && cartItems.forEach(item => setTotalPrice(+item.price))
+        calcTotalPrice(cartItems)
     }, [cartItems])
 
     React.useEffect(() => {
         dispatch(fetchAllCart())
-      }, [])
+    }, [])
 
     return (
         <div className='header'>
@@ -41,8 +41,13 @@ const Header = () => {
                             <Link to='/addsneakers'>Добавить товар <PlusLg /></Link>
                         </div>
                         <div onClick={onVisibCart} className="header__profile--cart">
+                            {cartItems &&
+                                <div className="header__profile--cart-count">
+                                    <span>{cartItems.length}</span>
+                                </div>
+                            }
                             <Cart3 />
-                            <span>{totalPrice} ₽</span>
+                            <p>{totalPrice} ₽</p>
                         </div>
                         <div className="header__profile--btn">
                             <Link to='/bookmarks'>

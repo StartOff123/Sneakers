@@ -66,3 +66,20 @@ export const cartAll = async (req, res) => {
         console.log(`${chalk.green('POST')} ${chalk.underline.italic.gray('/user/remvoeCard')} success: ${chalk.red('false')}`)
     }
 }
+
+export const bookmarksAll = async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.userId).exec()
+        const bookmarksItems = await Promise.all(
+            user.bookmarks.map(async cardId =>
+                await CardModel.findById(cardId)
+            )
+        )
+        res.json(bookmarksItems)
+    } catch (error) {
+        res.status(500).json({
+            message: 'Не удалось вернуть товары'
+        })
+        console.log(`${chalk.green('POST')} ${chalk.underline.italic.gray('/user/allBookmarks')} success: ${chalk.red('false')}`)
+    }
+}

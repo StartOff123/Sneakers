@@ -6,21 +6,22 @@ import { Header } from './components'
 import { fetchGetMe } from './redux/slices/Auth'
 import { Bookmarks, Home, Auth, Profile, FullCard, AddSneakers } from './pages'
 import { Cart, Login, Register} from './modules'
+import { fetchAllBookmarks } from './redux/slices/Bookmarks'
 
 const App = () => {
   const dispatch = useDispatch()
-  const { isVisibCart } = useSelector(state => state.visib)
 
   React.useEffect(() => {
     if (window.localStorage.getItem('token')) {
       dispatch(fetchGetMe())
+      dispatch(fetchAllBookmarks())
       return
     }
   }, [])
 
   return (
     <div className="wrapper">
-      {isVisibCart && <Cart />}
+      <Cart />
       <Routes>
         <Route path='/auth' element={<Auth />}>
           <Route path='login' element={<Login />} />

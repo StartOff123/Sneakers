@@ -1,25 +1,18 @@
 import React from 'react'
 import { CaretLeft } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 import { Button, Card } from '../../components'
 import { NotBookmarks } from '../../assets'
 import './Bookmarks.scss'
 
 const Bookmarks = () => {
-    // const items = [
-    //     {
-    //         title: 'ADIDAS DEERUPT RUNNER БЕЛО-ЧЕРНЫЕ МУЖСКИЕ-ЖЕНСКИЕ (35-44)',
-    //         imgUrl: 'https://streetfoot.ru/wp-content/uploads/2020/07/adidas-deerupt-runner-belo-chernye-40-44.jpg',
-    //         price: 5090
-    //     },
-    // ]
-
-    const items = null
+    const { bookmarksItems } = useSelector(state => state.bookmarks)
 
     return (
         <div className='bookmarks'>
-            {items ?
+            {bookmarksItems ?
                 <>
                     <div className="bookmarks__header">
                         <Link to='/' className='bookmarks__header--back'>
@@ -28,7 +21,7 @@ const Bookmarks = () => {
                         <h1>Мои закладки</h1>
                     </div>
                     <div className="bookmarks__bookmarksItems">
-                        {items.map((item, index) =>
+                        {bookmarksItems.map((item, index) =>
                             <Card key={index} {...item} type='list' isLiked />
                         )}
                     </div>

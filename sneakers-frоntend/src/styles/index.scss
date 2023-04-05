@@ -28,3 +28,7 @@ html,
         border-radius: 20px;
     }
 }
+
+.css-dev-only-do-not-override-1e3x2xa.ant-modal-confirm .ant-modal-confirm-btns .ant-btn+.ant-btn {
+    outline: none;
+}

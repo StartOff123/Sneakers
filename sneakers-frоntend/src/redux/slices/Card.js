@@ -27,7 +27,7 @@ const initialState = {
     addedError: null
 }
 
-const authSlice = createSlice({
+const actionOnCardSlice = createSlice({
     name: 'Card',
     initialState,
     reducers: {},
@@ -57,4 +57,4 @@ const authSlice = createSlice({
     }
 })
 
-export default authSlice.reducer
+export default actionOnCardSlice.reducer

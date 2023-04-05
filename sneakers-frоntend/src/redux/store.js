@@ -4,10 +4,10 @@ import visib from './slices/Visib'
 import auth from './slices/Auth'
 import card from './slices/Card'
 import cart from './slices/Cart'
-import actionsOnCard from './slices/ActionsOnCard'
+import bookmarks from './slices/Bookmarks'
 
 const store = configureStore({
-    reducer: { visib, auth, card, cart, actionsOnCard }
+    reducer: { visib, auth, card, cart, bookmarks }
 })
 
 export default store
