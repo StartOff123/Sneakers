@@ -5,14 +5,21 @@ import { Form, Input, message } from 'antd'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
 
+import axios from '../../axios'
 import { validateForm } from '../../utils'
 import { fetchRegister } from '../../redux/slices/Auth'
 import { Button } from '../../components'
 import './Register.scss'
 
 const Register = () => {
-    const [status, setStatus] = React.useState(false)
     const dispath = useDispatch()
+    const [status, setStatus] = React.useState(false)
+
+    const handleChangeLogin = async loginValue => {
+        await axios.post('/auth/checkLogin', { login: loginValue })
+            .then(() => formik.handleChange(loginValue))
+            .catch(err => console.log(err))
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -22,21 +29,26 @@ const Register = () => {
             password: '',
             confirmation: '',
         },
-        validate: values => {
+        validate: async values => {
             let errors = {}
+            if (values.login === '') {
+                errors.login = 'Пожалуйста заполните это поле'
+            }
+            await axios.post('/auth/checkLogin', { login: values.login }).catch(err => errors.login = err.response.data.message)
             validateForm({ values, errors })
 
             return errors
         },
-        onSubmit: async values => {
+        onSubmit: async (values, { setErrors }) => {
             const { confirmation, ...data } = values
             await (dispath(fetchRegister(data)).unwrap().then(() => {
                 message.success('Регистрация прошла успешно!', 1.3)
                 setStatus(true)
             }).catch(error => {
-                message.error(error.message, 1.3)
+                setErrors({ login: error.message })
             }))
         }
+
     })
 
     return (
@@ -50,9 +62,10 @@ const Register = () => {
             >
                 <Form name="horizontal_login" layout="inline" style={{ justifyContent: 'space-between', marginBottom: 20 }}>
                     <Form.Item
+                        hasFeedback
                         style={{ width: '48%', margin: 0 }}
                         name="Name"
-                        validateStatus={!formik.touched.name ? '' : formik.errors.name ? 'error' : 'success'}
+                        validateStatus={!formik.touched.name ? '' : formik.errors.name && 'error'}
                         rules={[{ required: true, message: '' }]}
                     >
                         <Input
@@ -65,8 +78,9 @@ const Register = () => {
                         />
                     </Form.Item>
                     <Form.Item
+                        hasFeedback
                         style={{ width: '48%', margin: 0 }}
-                        validateStatus={!formik.touched.surname ? '' : formik.errors.surname ? 'error' : 'success'}
+                        validateStatus={!formik.touched.surname ? '' : formik.errors.surname && 'error'}
                         name="Surname"
                         rules={[{ required: true, message: '' }]}
                     >
@@ -82,6 +96,7 @@ const Register = () => {
                 </Form>
                 <Form.Item
                     name="Login"
+                    hasFeedback
                     help={formik.touched.login && formik.errors.login && formik.errors.login}
                     validateStatus={!formik.touched.login ? '' : formik.errors.login ? 'error' : 'success'}
                     rules={[{ required: true }]}

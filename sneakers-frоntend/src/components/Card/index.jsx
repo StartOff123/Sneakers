@@ -7,6 +7,9 @@ import { message, Modal } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { useSelector, useDispatch } from 'react-redux'
 
+import { selectIsAuth } from '../../redux/slices/Auth'
+import { fetchAllCard } from '../../redux/slices/Card'
+import { fetchGetMe } from '../../redux/slices/Auth'
 import { setAddCardBookmarks, setRemoveCardBookmarks } from '../../redux/slices/Bookmarks'
 import { setRemoveCardCart, setAddCardCart } from '../../redux/slices/Cart'
 import axios from '../../axios'
@@ -16,6 +19,7 @@ const Card = ({ _id, title, imgUrl, price, type, isLiked }) => {
     const dispatch = useDispatch()
 
     const { userData } = useSelector(state => state.auth)
+    const isAuth = useSelector(selectIsAuth)
     const [liked, setLiked] = React.useState(false)
     const [added, setAdded] = React.useState(false)
 
@@ -34,37 +38,41 @@ const Card = ({ _id, title, imgUrl, price, type, isLiked }) => {
     const onAdded = async (card, reqestType) => {
         switch (reqestType) {
             case 'ADD_CART':
-                message.success(`Кроссовки ${card.title} добавленны в корзину`, 1.3)
+                message.success(`${card.title} добавленны в корзину`, 1.3)
                 dispatch(setAddCardCart(card))
                 setAdded(!added)
                 await axios.post('/user/addCart', { cardId: card._id })
                 break
             case 'ADD_BOOKSMARKS':
-                message.success(`Кроссовки ${card.title} добавленны в закладки`, 1.3)
+                message.success(`${card.title} добавленны в закладки`, 1.3)
                 dispatch(setAddCardBookmarks(card))
                 setLiked(!liked)
                 await axios.post('/user/addBookmarks', { cardId: card._id })
                 break
         }
+        dispatch(fetchGetMe())
     }
 
     const onRemove = async (id, title, reqestType) => {
         switch (reqestType) {
             case 'REMOVE_CART':
-                message.success(`Кроссовки ${title} были убраны из корзины`, 1.3)
+                message.success(`${title} были убраны из корзины`, 1.3)
                 dispatch(setRemoveCardCart(id))
                 if (type === 'list') {
                     setAdded(false)
+                } else {
+                    dispatch(fetchAllCard())
                 }
                 await axios.post('/user/removeCart', { cardId: id })
                 break
             case 'REMOVE_BOOKSMARKS':
-                message.success(`Кроссовки ${title} были убраны из закладок`, 1.3)
+                message.success(`${title} были убраны из закладок`, 1.3)
                 dispatch(setRemoveCardBookmarks(id))
                 setLiked(false)
                 await axios.post('/user/removeBookmarks', { cardId: id })
                 break
         }
+        dispatch(fetchGetMe())
     }
 
     return (
@@ -85,16 +93,18 @@ const Card = ({ _id, title, imgUrl, price, type, isLiked }) => {
             })}
         >
             <div className="card__img">
-                {type === 'list' &&
-                    <div onClick={(addedBookmarks || liked || isLiked) ? () =>
-                        showDeleteConfirm({
-                            title: 'Убрать товар',
-                            content: `Убрать кроссовки ${title} из закладок?`,
-                            okText: 'Убрать',
-                            okType: 'danger',
-                            cancelText: 'Отмена',
-                        }, 'REMOVE_BOOKSMARKS') : 
-                        () => onAdded({ _id, title, imgUrl, price }, 'ADD_BOOKSMARKS')}
+                {isAuth && type === 'list' &&
+                    <div
+                        onClick={(addedBookmarks || liked || isLiked) ? () =>
+                            showDeleteConfirm({
+                                title: 'Убрать товар',
+                                content: `Убрать ${title} из закладок?`,
+                                okText: 'Убрать',
+                                okType: 'danger',
+                                cancelText: 'Отмена',
+                            }, 'REMOVE_BOOKSMARKS') :
+                            () => onAdded({ _id, title, imgUrl, price }, 'ADD_BOOKSMARKS')
+                        }
                         className={classnames('card__img--likeBtn', {
                             'card__img--likeBtn-liked': addedBookmarks || liked || isLiked
                         })}
@@ -114,31 +124,35 @@ const Card = ({ _id, title, imgUrl, price, type, isLiked }) => {
                         <b>Цена:</b>
                         <p>{price} ₽</p>
                     </div>
-                    <div
-                        onClick={(addedCard || added) ? () =>
-                            showDeleteConfirm({
-                                title: 'Убрать товар',
-                                content: `Убрать кроссовки ${title} из корзины?`,
-                                okText: 'Убрать',
-                                okType: 'danger',
-                                cancelText: 'Отмена',
-                            }, 'REMOVE_CART') :
-                            () => onAdded({ _id, title, imgUrl, price }, 'ADD_CART')
-                        }
-                        className={classnames('card__bottom--addBtn', {
-                            'card__bottom--addBtn-added': addedCard || added
-                        })}
-                    >
-                        {addedCard || added ? <Check color='#fff' /> : <Plus />}
-                    </div>
+                    {isAuth &&
+                        <div
+                            onClick={(addedCard || added) ? () =>
+                                showDeleteConfirm({
+                                    title: 'Убрать товар',
+                                    content: `Убрать ${title} из корзины?`,
+                                    okText: 'Убрать',
+                                    okType: 'danger',
+                                    cancelText: 'Отмена',
+                                }, 'REMOVE_CART') :
+                                () => onAdded({ _id, title, imgUrl, price }, 'ADD_CART')
+                            }
+                            className={classnames('card__bottom--addBtn', {
+                                'card__bottom--addBtn-added': addedCard || added
+                            })}
+                        >
+                            {addedCard || added ? <Check color='#fff' /> : <Plus />}
+                        </div>
+                    }
                 </div> :
-                <div onClick={() => showDeleteConfirm({
-                    title: 'Убрать товар',
-                    content: `Убрать кроссовки ${title} из корзины?`,
-                    okText: 'Убрать',
-                    okType: 'danger',
-                    cancelText: 'Отмена',
-                }, 'REMOVE_CART')}
+                <div
+                    onClick={() => showDeleteConfirm({
+                        title: 'Убрать товар',
+                        content: `Убрать ${title} из корзины?`,
+                        okText: 'Убрать',
+                        okType: 'danger',
+                        cancelText: 'Отмена',
+                    }, 'REMOVE_CART')
+                    }
                     className='card__bottom--remove'>
                     <X />
                 </div>
@@ -148,6 +162,7 @@ const Card = ({ _id, title, imgUrl, price, type, isLiked }) => {
 }
 
 Card.propTypes = {
+    _id: PropTypes.string,
     title: PropTypes.string,
     imgUrl: PropTypes.string,
     price: PropTypes.number,

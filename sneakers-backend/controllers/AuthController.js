@@ -95,3 +95,21 @@ export const getMe = async (req, res) => {
     })
     console.log(`${chalk.magenta('GET')} ${chalk.underline.italic.gray('/auth/me')} success: ${chalk.green('true')}`)
 }
+
+export const checkLogin = async (req, res) => {
+    try {
+        const user = await UserModel.findOne({ login: req.body.login }).exec()
+
+        if (user) {
+            return res.status(403).json({
+                message: 'Логин занят'
+            })
+        }
+
+        res.json({
+            sucsess: true
+        })
+    } catch (error) {
+        
+    }
+}

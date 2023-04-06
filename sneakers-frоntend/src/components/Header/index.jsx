@@ -1,10 +1,10 @@
 import React from 'react'
-import { Cart3, Heart, PersonCircle, PlusLg } from 'react-bootstrap-icons'
+import { Cart3, Heart, PersonCircle, PatchPlus } from 'react-bootstrap-icons'
 import { useDispatch, useSelector } from 'react-redux'
+import { Badge } from 'antd'
 import { Link } from 'react-router-dom'
 
 import { calcTotalPrice } from '../../utils'
-import { fetchAllCart } from '../../redux/slices/Cart'
 import { setIsVisibCard } from '../../redux/slices/Visib'
 import { selectIsAuth } from '../../redux/slices/Auth'
 import { Logo } from '../../assets'
@@ -14,16 +14,13 @@ const Header = () => {
     const dispatch = useDispatch()
     const isAuth = useSelector(selectIsAuth)
     const { totalPrice, cartItems } = useSelector(state => state.cart)
+    const { bookmarksItems } = useSelector(state => state.bookmarks)
 
     const onVisibCart = () => dispatch(setIsVisibCard(true))
 
     React.useEffect(() => {
         calcTotalPrice(cartItems)
     }, [cartItems])
-
-    React.useEffect(() => {
-        dispatch(fetchAllCart())
-    }, [])
 
     return (
         <div className='header'>
@@ -38,20 +35,19 @@ const Header = () => {
                 {isAuth ?
                     <>
                         <div className="header__profile--btn">
-                            <Link to='/addsneakers'>Добавить товар <PlusLg /></Link>
+                            <Link to='/addsneakers'>Добавить товар <PatchPlus style={{ marginLeft: 10 }}/></Link>
                         </div>
                         <div onClick={onVisibCart} className="header__profile--cart">
-                            {cartItems &&
-                                <div className="header__profile--cart-count">
-                                    <span>{cartItems.length}</span>
-                                </div>
-                            }
-                            <Cart3 />
+                            <Badge color='#87d194' count={cartItems && cartItems.length} offset={[-30]} size='small'>
+                                <Cart3 />
+                            </Badge>
                             <p>{totalPrice} ₽</p>
                         </div>
                         <div className="header__profile--btn">
                             <Link to='/bookmarks'>
-                                <Heart />
+                                <Badge color='#ff9a9a' count={bookmarksItems && bookmarksItems.length} size='small'>
+                                    <Heart />
+                                </Badge>
                             </Link>
                             <Link to='/profile'>
                                 <PersonCircle />

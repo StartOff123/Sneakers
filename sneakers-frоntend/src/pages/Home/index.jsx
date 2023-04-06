@@ -4,8 +4,8 @@ import { Search } from 'react-bootstrap-icons'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Card } from '../../components'
-import './Home.scss'
 import { fetchAllCard } from '../../redux/slices/Card'
+import './Home.scss'
 
 const Home = () => {
   const dispatch = useDispatch()

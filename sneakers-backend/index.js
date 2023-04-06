@@ -50,6 +50,7 @@ app.get('/user/allBookmarks', checkAuth, CardController.bookmarksAll)
 
 app.post('/auth/register', AuthController.register)
 app.post('/auth/login', AuthController.login)
+app.post('/auth/checkLogin', AuthController.checkLogin)
 app.get('/auth/me', checkAuth, AuthController.getMe)
 
 app.listen(PORT, err => {
