@@ -112,7 +112,7 @@ const Card = ({ _id, title, imgUrl, price, type, isLiked }) => {
                         {(addedBookmarks || liked || isLiked) ? <HeartFill color='#FF8585' /> : <Heart />}
                     </div>
                 }
-                <img src={'http://localhost:5555' + imgUrl} alt="Sneakers" />
+                <img src={'http://snapi.candy.anosov.ru' + imgUrl} alt="Sneakers" />
             </div>
             <div className="card__title">
                 <Link to={"/" + _id}>{title}</Link>
