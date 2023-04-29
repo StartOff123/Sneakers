@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import visib from './slices/Visib'
+import visib from './slices/visib'
 import auth from './slices/Auth'
 import card from './slices/Card'
 import cart from './slices/Cart'

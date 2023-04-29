@@ -5,7 +5,7 @@ import { Badge } from 'antd'
 import { Link } from 'react-router-dom'
 
 import { calcTotalPrice } from '../../utils'
-import { setIsVisibCard } from '../../redux/slices/Visib'
+import { setIsVisibCard } from '../../redux/slices/visib'
 import { selectIsAuth } from '../../redux/slices/Auth'
 import { Logo } from '../../assets'
 import './Header.scss'
