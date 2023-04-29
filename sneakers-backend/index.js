@@ -28,7 +28,7 @@ app.use(express.json())
 app.use(cors())
 app.use('/uploads', express.static('uploads'))
 
-const PORT = process.env.PORT || 5555
+const PORT = process.env.PORT || 5556
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
     res.json({
