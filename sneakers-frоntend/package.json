@@ -28,7 +28,7 @@
     "webpack-cli": "^5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=5555 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
